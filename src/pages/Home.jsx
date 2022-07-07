@@ -44,14 +44,14 @@ export const Home = () => {
 					src={HeroBg}
 					alt="heroBg"
 				/>
-				<div className="absolute top-0 left-0 flex items-center justify-center w-full h-full py-4 xl:px-20 2xl:px-40 flex-wrap gap-4 lg:gap-4">
+				<div className="absolute top-0 left-0 flex items-center justify-center w-full h-full py-4 xl:px-20 2xl:px-40 flex-wrap gap-4">
 					{heroData.map((data) => (
 						<div
-							className="lg:w-190 p-4 bg-cardOverlay backdrop-blur-md flex flex-col items-center justify-center rounded-md drop-shadow-lg"
+							className="p-4 bg-cardOverlay backdrop-blur-md flex flex-col items-center justify-center rounded-md drop-shadow-lg"
 							key={data.id}
 						>
 							<img
-								className="w-20 -mt-10 lg:w-40 lg:-mt-20"
+								className="w-20 h-20 -mt-10 lg:w-40 lg:-mt-20 lg:h-40"
 								src={data.imageSrc}
 								alt={data.alt}
 							/>
