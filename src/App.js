@@ -2,17 +2,26 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import { Header, MainContainer, CreateContainer } from './components'
+import { Header, PrivateRoute } from './components'
+import { Home, Menu, CreateItem } from './pages'
 
 const App = () => {
 	return (
 		<AnimatePresence exitBeforeEnter>
-			<div className="w-screen h-auto flex flex-col bg-primary">
+			<div className="w-screen flex flex-col bg-primary min-h-screen">
 				<Header />
-				<main className="mt-24 p-8 w-full">
+				<main className="md:mt-[88px] mt-16 md:px-16 px-4 py-4 w-full flex-grow">
 					<Routes>
-						<Route path="/*" element={<MainContainer />} />
-						<Route path="/createItem" element={<CreateContainer />} />
+						<Route path="/*" element={<Home />} />
+						<Route path="/menu" element={<Menu />} />
+						<Route
+							path="/createItem"
+							element={
+								<PrivateRoute>
+									<CreateItem />
+								</PrivateRoute>
+							}
+						/>
 					</Routes>
 				</main>
 			</div>

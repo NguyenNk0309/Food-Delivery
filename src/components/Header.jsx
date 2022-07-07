@@ -2,21 +2,20 @@ import React, { useState } from 'react'
 import { MdAdd, MdLogout, MdShoppingBasket } from 'react-icons/md'
 import { NavLink } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 
-import { app } from '../firebase.config'
+import { firebaseAuth } from '../firebase.config'
 import Logo from '../img/logo.png'
 import Avatar from '../img/avatar.png'
 import { useStateValue } from '../context/StateProvider'
 import { actionType } from '../context/reducer'
 
 export const Header = () => {
-	const firebaseAuth = getAuth(app)
 	const provider = new GoogleAuthProvider()
 
 	const [{ user }, dispatch] = useStateValue()
 
-	const login = async () => {
+	async function logIn() {
 		if (user === null) {
 			const {
 				user: { refreshToken, providerData },
@@ -40,10 +39,16 @@ export const Header = () => {
 		})
 	}
 
+	document.addEventListener('mousedown', (e) => {
+		if (isMenuDisplay && !e.target.closest('.icon')) {
+			setMenuDisplay(false)
+		}
+	})
+
 	const [isMenuDisplay, setMenuDisplay] = useState(false)
 
 	return (
-		<header className="fixed z-50 w-screen p-3 px-4 md:p-6 md:px-16">
+		<header className="fixed z-50 w-screen p-3 px-4 md:p-6 md:px-16 bg-primary">
 			{/* PC & Tablet */}
 			<div className="hidden md:flex w-full h-full items-center justify-between">
 				<NavLink to={'/'} className="flex items-center gap-2 cursor-pointer">
@@ -52,7 +57,7 @@ export const Header = () => {
 				</NavLink>
 
 				<div className="flex gap-8 items-center">
-					<motion.ul
+					<motion.nav
 						initial={{ opacity: 0, x: -200 }}
 						animate={{ opacity: 1, x: 0 }}
 						exit={{ opacity: 0, x: -200 }}
@@ -94,7 +99,7 @@ export const Header = () => {
 						>
 							Service
 						</NavLink>
-					</motion.ul>
+					</motion.nav>
 
 					<div className="relative flex items-center justify-center">
 						<MdShoppingBasket className="text-textColor text-2xl cursor-pointer" />
@@ -103,7 +108,7 @@ export const Header = () => {
 						</div>
 					</div>
 
-					<div className="relative" onClick={login}>
+					<div className="icon relative" onClick={logIn}>
 						<motion.img
 							whileTap={{ scale: 0.8 }}
 							className="w-10 min-w-[40] h-10 min-h-[40] drop-shadow-xl cursor-pointer rounded-full"
@@ -115,8 +120,12 @@ export const Header = () => {
 								initial={{ opacity: 0, scale: 0.6 }}
 								animate={{ opacity: 1, scale: 1 }}
 								exit={{ opacity: 0, scale: 0.6 }}
-								className="w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0 "
+								className="w-52 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0 "
 							>
+								<p className="flex items-center justify-end border-y-gray-200 border-b-[1px] px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-red-500 text-base">
+									<span className="text-textColor mr-2">Hello </span>{' '}
+									{user.displayName}
+								</p>
 								{user && user.email === 'khoinguyen.030901@gmail.com' && (
 									<NavLink to="/createItem">
 										<p className="flex items-center justify-end gap-3 px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base">
@@ -150,7 +159,7 @@ export const Header = () => {
 					<p className="text-headingColor text-xl font-bold">City</p>
 				</NavLink>
 
-				<div className="relative" onClick={login}>
+				<div className="icon relative" onClick={logIn}>
 					<motion.img
 						whileTap={{ scale: 0.8 }}
 						className="w-10 min-w-[40] h-10 min-h-[40] drop-shadow-xl cursor-pointer rounded-full"
@@ -162,8 +171,12 @@ export const Header = () => {
 							initial={{ opacity: 0, scale: 0.6 }}
 							animate={{ opacity: 1, scale: 1 }}
 							exit={{ opacity: 0, scale: 0.6 }}
-							className="w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0 "
+							className="w-52 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0 "
 						>
+							<p className="flex items-center justify-start border-y-gray-200 border-b-[1px] px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-red-500 text-base">
+								<span className="text-textColor mr-2">Hello </span>{' '}
+								{user.displayName}
+							</p>
 							{user && user.email === 'khoinguyen.030901@gmail.com' && (
 								<NavLink to="/createItem">
 									<p className="flex items-center justify-start gap-3 px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base">
@@ -171,7 +184,7 @@ export const Header = () => {
 									</p>
 								</NavLink>
 							)}
-							<ul>
+							<nav>
 								<NavLink
 									to="/"
 									className="flex items-center justify-start gap-3 px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base"
@@ -196,7 +209,7 @@ export const Header = () => {
 								>
 									Service
 								</NavLink>
-							</ul>
+							</nav>
 							<p
 								className="flex items-center justify-start gap-3 bg-slate-200 px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base"
 								onClick={logOut}
