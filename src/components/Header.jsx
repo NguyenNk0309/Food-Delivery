@@ -51,7 +51,7 @@ export const Header = () => {
 		<header className="fixed z-50 w-screen p-3 px-4 md:p-6 md:px-16 bg-primary">
 			{/* PC & Tablet */}
 			<div className="hidden md:flex w-full h-full items-center justify-between">
-				<NavLink to={'/'} className="flex items-center gap-2 cursor-pointer">
+				<NavLink to="/" className="flex items-center gap-2 cursor-pointer">
 					<img className="w-8 object-cover" src={Logo} alt="logo" />
 					<p className="text-headingColor text-xl font-bold">City</p>
 				</NavLink>
@@ -103,9 +103,11 @@ export const Header = () => {
 
 					<div className="relative flex items-center justify-center">
 						<MdShoppingBasket className="text-textColor text-2xl cursor-pointer" />
-						<div className="absolute -top-3 -right-3 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
-							<span className="text-xs text-white font-semibold">0</span>
-						</div>
+						{user && (
+							<div className="absolute -top-3 -right-3 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
+								<span className="text-xs text-white font-semibold">0</span>
+							</div>
+						)}
 					</div>
 
 					<div className="icon relative" onClick={logIn}>
@@ -149,12 +151,14 @@ export const Header = () => {
 			<div className="flex items-center justify-between md:hidden w-full h-full">
 				<div className="relative flex items-center justify-center">
 					<MdShoppingBasket className="text-textColor text-2xl cursor-pointer" />
-					<div className="absolute -top-3 -right-3 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
-						<span className="text-xs text-white font-semibold">0</span>
-					</div>
+					{user && (
+						<div className="absolute -top-3 -right-3 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
+							<span className="text-xs text-white font-semibold">0</span>
+						</div>
+					)}
 				</div>
 
-				<NavLink to={'/'} className="flex items-center gap-2 cursor-pointer">
+				<NavLink to="/" className="flex items-center gap-2 cursor-pointer">
 					<img className="w-8 object-cover" src={Logo} alt="logo" />
 					<p className="text-headingColor text-xl font-bold">City</p>
 				</NavLink>
