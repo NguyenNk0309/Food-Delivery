@@ -1,17 +1,68 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { MdAttachMoney, MdCloudUpload, MdDelete, MdFastfood, MdFoodBank } from 'react-icons/md'
+import { MdAttachMoney, MdOutlineModeEdit, MdFastfood, MdFoodBank } from 'react-icons/md'
 import { categories } from '../../utils/data'
 import { Loading } from '../../components'
 
-const ItemModifyModal = ({ closeModal, data }) => {
-	document.addEventListener('mousedown', (e) => {
-		if (!e.target.closest('.modal')) {
-			closeModal(false)
-		}
-	})
+import { setDoc, doc } from 'firebase/firestore'
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
+import { firestore, storage } from '../../firebase.config'
 
-	console.log(data)
+const ItemModifyModal = ({ closeModal, data }) => {
+	const [title, setTitle] = useState('')
+	const [calories, setCalories] = useState('')
+	const [price, setPrice] = useState('')
+	const [category, setCategory] = useState(null)
+	const [imageAsset, setImageAsset] = useState(null)
+	const [isLoading, setIsLoading] = useState(false)
+
+	function cancelModal() {
+		closeModal(false)
+		setIsLoading(true)
+		const deleteRef = ref(storage, imageAsset)
+		deleteObject(deleteRef).then(() => {
+			setImageAsset(null)
+			setTitle('')
+			setCalories('')
+			setPrice('')
+			setCategory(null)
+			setIsLoading(false)
+		})
+	}
+
+	function changeImg(e) {
+		setIsLoading(true)
+		const imgFile = e.target.files[0]
+		const storageRef = ref(storage, `Images/${Date.now()}-${imgFile.name}`)
+		uploadBytes(storageRef, imgFile)
+			.then((snapshot) => {
+				getDownloadURL(storageRef).then((url) => {
+					setIsLoading(false)
+					setImageAsset(url)
+				})
+			})
+			.catch((error) => {})
+	}
+
+	async function saveData() {
+		if (title != '') {
+			setDoc(doc(firestore, 'products', data.id), { title: title }, { merge: true })
+		}
+		if (calories != '') {
+			setDoc(doc(firestore, 'products', data.id), { calories: calories }, { merge: true })
+		}
+		if (category != null) {
+			setDoc(doc(firestore, 'products', data.id), { category: category }, { merge: true })
+		}
+		if (price != '') {
+			setDoc(doc(firestore, 'products', data.id), { price: price }, { merge: true })
+		}
+		if (imageAsset != null) {
+			setDoc(doc(firestore, 'products', data.id), { imageURL: imageAsset }, { merge: true })
+		}
+		closeModal(false)
+	}
+
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
@@ -26,8 +77,9 @@ const ItemModifyModal = ({ closeModal, data }) => {
 					<MdFastfood className="text-xl text-gray-700" />
 					<input
 						type="text"
-						required
-						placeholder="Give me a title..."
+						value={title}
+						onChange={(e) => setTitle(e.target.value)}
+						placeholder={data.title}
 						className="w-full h-full text-lg bg-transparent font-semibold outline-none border-none text-textColor placeholder:text-gray-400"
 					/>
 				</div>
@@ -36,6 +88,7 @@ const ItemModifyModal = ({ closeModal, data }) => {
 						name="categories"
 						id="categories"
 						className="w-full outline-none text-base border-b-2 bg-gray-200 p-2 rounded-md cursor-pointer"
+						onChange={(e) => setCategory(e.target.value)}
 					>
 						<option
 							className="bg-white capitalize text-headingColor text-base border-none outline-none"
@@ -55,14 +108,36 @@ const ItemModifyModal = ({ closeModal, data }) => {
 					</select>
 				</div>
 				<div className="w-full h-225 md:h-420 flex items-center justify-center flex-col border-2 border-dotted border-gray-300 cursor-pointer rounded-lg">
-					<Loading />
+					{isLoading ? (
+						<Loading />
+					) : (
+						<div className="relative w-full h-full">
+							<img
+								src={imageAsset || data.imageURL}
+								alt="uploaded image"
+								className="w-full h-full object-contain"
+							/>
+							<label className="flex absolute bottom-3 right-3 p-3 rounded-full bg-blue-500 text-xl cursor-pointer hover:shadow-md duration-500 transition-all ease-in-out">
+								<input
+									type="file"
+									name="uploadingImg"
+									id="uploadingImg"
+									accept="image/*"
+									className="w-0 h-0"
+									onChange={changeImg}
+								/>
+								<MdOutlineModeEdit className="text-white" />
+							</label>
+						</div>
+					)}
 				</div>
 				<div className="w-full py-2 border-b border-gray-300 flex items-center gap-3">
 					<MdFoodBank className="text-xl text-gray-700" />
 					<input
 						type="text"
-						required
-						placeholder="Calories"
+						value={calories}
+						onChange={(e) => setCalories(e.target.value)}
+						placeholder={data.calories}
 						className="w-full h-full text-lg bg-transparent font-semibold outline-none border-none text-textColor placeholder:text-gray-400"
 					/>
 				</div>
@@ -70,14 +145,24 @@ const ItemModifyModal = ({ closeModal, data }) => {
 					<MdAttachMoney className="text-xl text-gray-700" />
 					<input
 						type="text"
-						required
-						placeholder="Price"
+						value={price}
+						onChange={(e) => setPrice(e.target.value)}
+						placeholder={data.price}
 						className="w-full h-full text-lg bg-transparent font-semibold outline-none border-none text-textColor placeholder:text-gray-400"
 					/>
 				</div>
-				<div className="flex w-full items-center">
-					<button className="ml-0 md:ml-auto w-full md:w-auto outline-none bg-emerald-500 px-12 py-2 rounded-lg text-lg text-white font-semibold">
+				<div className="flex w-full items-center justify-end md:flex-row flex-col gap-4">
+					<button
+						className="w-full md:w-auto outline-none bg-emerald-500 px-12 py-2 rounded-lg text-lg text-white font-semibold"
+						onClick={saveData}
+					>
 						Save
+					</button>
+					<button
+						className="w-full md:w-auto outline-none bg-red-500 px-12 py-2 rounded-lg text-lg text-white font-semibold"
+						onClick={cancelModal}
+					>
+						Cancel
 					</button>
 				</div>
 			</div>

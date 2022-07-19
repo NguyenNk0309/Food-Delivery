@@ -1,13 +1,14 @@
 import React from 'react'
 import { MdSearch, MdOutlineAddToPhotos, MdAttachMoney, MdClose } from 'react-icons/md'
-import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore'
-import { firestore } from '../../firebase.config.js'
+import { collection, getDocs, doc, deleteDoc, onSnapshot } from 'firebase/firestore'
+import { firestore, storage } from '../../firebase.config.js'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Loading from '../Loading'
 import ItemModifyModal from './ItemModifyModal'
+import { ref, deleteObject } from 'firebase/storage'
 
 const ConfigItem = () => {
 	const [items, setItems] = useState([])
@@ -30,21 +31,34 @@ const ConfigItem = () => {
 		fetchData()
 	}, [])
 
-	async function deleteItem(id) {
+	async function deleteItem(dat) {
 		let text = 'Are you sure to delete this item ?'
 		if (window.confirm(text) == true) {
 			setItems((prev) =>
 				prev.filter((item) => {
-					return item.id !== id
+					return item.id !== dat.id
 				})
 			)
-			await deleteDoc(doc(firestore, 'products', id))
+			await deleteDoc(doc(firestore, 'products', dat.id))
+			const deleteRef = ref(storage, dat.imageURL)
+			deleteObject(deleteRef)
 		}
 	}
 
 	function openModal(data) {
 		setModalDisplay(true)
 		setData(data)
+		onSnapshot(doc(firestore, 'products', data.id), (doc) => {
+			setItems((prev) =>
+				prev.map((item) => {
+					if (doc.data().id == item.id) {
+						return doc.data()
+					} else {
+						return item
+					}
+				})
+			)
+		})
 	}
 
 	return isLoading ? (
@@ -93,7 +107,7 @@ const ConfigItem = () => {
 						})
 						.map((item) => (
 							<motion.div
-								key={item.id}
+								key={item.title}
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
@@ -129,7 +143,7 @@ const ConfigItem = () => {
 									</button>
 									<button
 										className="bg-red-300 hover:bg-red-400 px-2 py-2 md:py-[4px] rounded-lg border-red-500 border-2 w-full md:w-auto"
-										onClick={() => deleteItem(item.id)}
+										onClick={() => deleteItem(item)}
 									>
 										Delete
 									</button>

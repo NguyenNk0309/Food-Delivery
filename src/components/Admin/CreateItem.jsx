@@ -111,11 +111,6 @@ const CreateItem = () => {
 		}
 	}
 
-	window.onbeforeunload = function (e) {
-		const deleteRef = ref(storage, imageAsset)
-		deleteObject(deleteRef)
-	}
-
 	return (
 		<div className="w-full h-full flex items-center justify-center">
 			<div className="w-[90%] md:w-[75%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4">
