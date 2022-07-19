@@ -17,17 +17,18 @@ const ItemModifyModal = ({ closeModal, data }) => {
 	const [isLoading, setIsLoading] = useState(false)
 
 	function cancelModal() {
+		if (imageAsset) {
+			const deleteRef = ref(storage, imageAsset)
+			deleteObject(deleteRef).then(() => {
+				setImageAsset(null)
+			})
+		}
 		closeModal(false)
-		setIsLoading(true)
-		const deleteRef = ref(storage, imageAsset)
-		deleteObject(deleteRef).then(() => {
-			setImageAsset(null)
-			setTitle('')
-			setCalories('')
-			setPrice('')
-			setCategory(null)
-			setIsLoading(false)
-		})
+		setTitle('')
+		setCalories('')
+		setPrice('')
+		setCategory(null)
+		setIsLoading(false)
 	}
 
 	function changeImg(e) {
@@ -59,10 +60,10 @@ const ItemModifyModal = ({ closeModal, data }) => {
 		}
 		if (imageAsset != null) {
 			setDoc(doc(firestore, 'products', data.id), { imageURL: imageAsset }, { merge: true })
+			const deleteRef = ref(storage, data.imageURL)
+			deleteObject(deleteRef)
 		}
 		closeModal(false)
-		const deleteRef = ref(storage, data.imageURL)
-		deleteObject(deleteRef)
 	}
 
 	return (
