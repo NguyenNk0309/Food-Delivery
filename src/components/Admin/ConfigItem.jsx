@@ -33,7 +33,7 @@ const ConfigItem = () => {
 
 	async function deleteItem(dat) {
 		let text = 'Are you sure to delete this item ?'
-		if (window.confirm(text) == true) {
+		if (window.confirm(text) === true) {
 			setItems((prev) =>
 				prev.filter((item) => {
 					return item.id !== dat.id
@@ -51,7 +51,7 @@ const ConfigItem = () => {
 		onSnapshot(doc(firestore, 'products', data.id), (doc) => {
 			setItems((prev) =>
 				prev.map((item) => {
-					if (doc.data().id == item.id) {
+					if (doc.data().id === item.id) {
 						return doc.data()
 					} else {
 						return item
@@ -94,7 +94,7 @@ const ConfigItem = () => {
 					</NavLink>
 					{items
 						.filter((val) => {
-							if (searchInput == '') {
+							if (searchInput === '') {
 								return val
 							} else if (
 								val.title.toLowerCase().includes(searchInput.toLowerCase()) ||

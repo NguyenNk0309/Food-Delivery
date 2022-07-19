@@ -46,16 +46,16 @@ const ItemModifyModal = ({ closeModal, data }) => {
 	}
 
 	async function saveData() {
-		if (title != '') {
+		if (title !== '') {
 			setDoc(doc(firestore, 'products', data.id), { title: title }, { merge: true })
 		}
-		if (calories != '') {
+		if (calories !== '') {
 			setDoc(doc(firestore, 'products', data.id), { calories: calories }, { merge: true })
 		}
-		if (category != null) {
+		if (category !== null) {
 			setDoc(doc(firestore, 'products', data.id), { category: category }, { merge: true })
 		}
-		if (price != '') {
+		if (price !== '') {
 			setDoc(doc(firestore, 'products', data.id), { price: price }, { merge: true })
 		}
 		if (imageAsset != null) {
