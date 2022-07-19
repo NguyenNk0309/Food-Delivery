@@ -4,9 +4,9 @@ import { MdAttachMoney, MdCloudUpload, MdDelete, MdFastfood, MdFoodBank } from '
 import { setDoc, doc } from 'firebase/firestore'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 
-import { categories } from '../utils/data'
-import { Loading } from '../components'
-import { firestore, storage } from '../firebase.config'
+import { categories } from '../../utils/data'
+import { Loading } from '../../components'
+import { firestore, storage } from '../../firebase.config'
 
 const CreateItem = () => {
 	const [title, setTitle] = useState('')
@@ -96,7 +96,6 @@ const CreateItem = () => {
 				setPrice('')
 				setCalories('')
 				setImageAsset(null)
-				setCategory(null)
 				setTimeout(() => {
 					setFields(false)
 				}, 4000)
@@ -112,8 +111,13 @@ const CreateItem = () => {
 		}
 	}
 
+	window.onbeforeunload = function (e) {
+		const deleteRef = ref(storage, imageAsset)
+		deleteObject(deleteRef)
+	}
+
 	return (
-		<div className="w-full flex items-center justify-center">
+		<div className="w-full h-full flex items-center justify-center">
 			<div className="w-[90%] md:w-[75%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4">
 				{fields && (
 					<motion.p

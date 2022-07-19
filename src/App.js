@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import { Header, PrivateRoute } from './components'
-import { Home, Menu, CreateItem, NotFound } from './pages'
+import { Home, Menu, NotFound, Admin } from './pages'
 
 const App = () => {
 	return (
@@ -12,17 +12,17 @@ const App = () => {
 				<Header />
 				<main className="md:mt-[88px] mt-16 md:px-16 px-4 py-4 w-full flex flex-grow">
 					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/menu" element={<Menu />} />
+						<Route path="" element={<Home />} />
+						<Route path="menu" element={<Menu />} />
 						<Route
-							path="/createItem"
+							path="admin/*"
 							element={
 								<PrivateRoute>
-									<CreateItem />
+									<Admin />
 								</PrivateRoute>
 							}
 						/>
-						<Route path="/*" element={<NotFound />} />
+						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</main>
 			</div>

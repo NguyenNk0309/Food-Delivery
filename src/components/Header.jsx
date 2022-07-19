@@ -51,7 +51,7 @@ export const Header = () => {
 		<header className="fixed z-50 w-screen p-3 px-4 md:p-6 md:px-16 bg-primary">
 			{/* PC & Tablet */}
 			<div className="hidden md:flex w-full h-full items-center justify-between">
-				<NavLink to="/" className="flex items-center gap-2 cursor-pointer">
+				<NavLink to="" className="flex items-center gap-2 cursor-pointer">
 					<img className="w-8 object-cover" src={Logo} alt="logo" />
 					<p className="text-headingColor text-xl font-bold">City</p>
 				</NavLink>
@@ -64,7 +64,7 @@ export const Header = () => {
 						className="flex items-center gap-8"
 					>
 						<NavLink
-							to="/"
+							to=""
 							style={({ isActive }) => ({
 								color: isActive ? 'red' : '',
 							})}
@@ -73,7 +73,7 @@ export const Header = () => {
 							Home
 						</NavLink>
 						<NavLink
-							to="/menu"
+							to="menu"
 							style={({ isActive }) => ({
 								color: isActive ? 'red' : '',
 							})}
@@ -82,7 +82,7 @@ export const Header = () => {
 							Menu
 						</NavLink>
 						<NavLink
-							to="/aboutUs"
+							to="aboutUs"
 							style={({ isActive }) => ({
 								color: isActive ? 'red' : '',
 							})}
@@ -91,7 +91,7 @@ export const Header = () => {
 							About Us
 						</NavLink>
 						<NavLink
-							to="/service"
+							to="service"
 							style={({ isActive }) => ({
 								color: isActive ? 'red' : '',
 							})}
@@ -129,9 +129,9 @@ export const Header = () => {
 									{user.displayName}
 								</p>
 								{user && user.email === 'khoinguyen.030901@gmail.com' && (
-									<NavLink to="/createItem">
+									<NavLink to="admin/product/createItem">
 										<p className="flex items-center justify-end gap-3 px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base">
-											New Item <MdAdd />
+											Admin <MdAdd />
 										</p>
 									</NavLink>
 								)}
@@ -158,7 +158,7 @@ export const Header = () => {
 					)}
 				</div>
 
-				<NavLink to="/" className="flex items-center gap-2 cursor-pointer">
+				<NavLink to="" className="flex items-center gap-2 cursor-pointer">
 					<img className="w-8 object-cover" src={Logo} alt="logo" />
 					<p className="text-headingColor text-xl font-bold">City</p>
 				</NavLink>
@@ -182,33 +182,33 @@ export const Header = () => {
 								{user.displayName}
 							</p>
 							{user && user.email === 'khoinguyen.030901@gmail.com' && (
-								<NavLink to="/createItem">
+								<NavLink to="admin/product/createItem">
 									<p className="flex items-center justify-start gap-3 px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base">
-										New Item <MdAdd />
+										Admin <MdAdd />
 									</p>
 								</NavLink>
 							)}
 							<nav>
 								<NavLink
-									to="/"
+									to=""
 									className="flex items-center justify-start gap-3 px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base"
 								>
 									Home
 								</NavLink>
 								<NavLink
-									to="/menu"
+									to="menu"
 									className="flex items-center justify-start gap-3 px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base"
 								>
 									Menu
 								</NavLink>
 								<NavLink
-									to="/aboutUs"
+									to="aboutUs"
 									className="flex items-center justify-start gap-3 px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base"
 								>
 									About Us
 								</NavLink>
 								<NavLink
-									to="/service"
+									to="service"
 									className="flex items-center justify-start gap-3 px-4 py-2 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base"
 								>
 									Service
