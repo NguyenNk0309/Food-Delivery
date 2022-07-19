@@ -61,6 +61,8 @@ const ItemModifyModal = ({ closeModal, data }) => {
 			setDoc(doc(firestore, 'products', data.id), { imageURL: imageAsset }, { merge: true })
 		}
 		closeModal(false)
+		const deleteRef = ref(storage, data.imageURL)
+		deleteObject(deleteRef)
 	}
 
 	return (
