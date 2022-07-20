@@ -51,7 +51,7 @@ const Sidebar = () => {
 								})}
 							>
 								<MdMiscellaneousServices className="text-2xl" />
-								<span>Management</span>
+								<span>Manage</span>
 							</NavLink>
 						</nav>
 					</li>
@@ -122,7 +122,7 @@ const Sidebar = () => {
 											})}
 										>
 											<MdMiscellaneousServices className="text-2xl" />
-											<span>Management</span>
+											<span>Manage</span>
 										</NavLink>
 									</nav>
 								</li>
