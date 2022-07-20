@@ -9,7 +9,7 @@ import OrderDetail from '../components/Admin/OrderDetail'
 
 const Admin = () => {
 	return (
-		<div className="w-full flex">
+		<div className="flex w-full">
 			<Sidebar />
 			<div className="flex items-center justify-center flex-grow">
 				<Routes>
